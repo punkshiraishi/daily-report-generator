@@ -1,5 +1,17 @@
 <script setup lang="ts">
+import { sendMessage } from 'webext-bridge'
 import { storageOptions } from '~/logic/storage'
+
+async function getTimeentries() {
+  const now = new Date()
+  const res = await sendMessage('get-clockify-timeentries', {
+    start: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 10),
+    end: now,
+  })
+
+  // eslint-disable-next-line no-console
+  console.log(res)
+}
 </script>
 
 <template>
@@ -71,6 +83,7 @@ import { storageOptions } from '~/logic/storage'
           </button>
           <button
             class="flex-grow rounded bg-sky-500 text-white drop-shadow-md p-2"
+            @click="getTimeentries"
           >
             日報取得
           </button>

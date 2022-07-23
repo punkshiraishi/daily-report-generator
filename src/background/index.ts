@@ -1,6 +1,7 @@
 import type { Tabs } from 'webextension-polyfill'
 import browser from 'webextension-polyfill'
 import { onMessage, sendMessage } from 'webext-bridge'
+import { getTimeentries } from '~/api/clockify'
 
 browser.action.onClicked.addListener(() => {
   browser.tabs.create({ url: 'dist/options/index.html' })
@@ -48,4 +49,8 @@ onMessage('get-current-tab', async () => {
       title: undefined,
     }
   }
+})
+
+onMessage('get-clockify-timeentries', async ({ data }) => {
+  return await getTimeentries(data.start, data.end)
 })
