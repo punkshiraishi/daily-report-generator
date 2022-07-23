@@ -1,0 +1,19 @@
+{
+  "Component": {
+    "scope": "vue",
+    "prefix": [
+      "component",
+    ],
+    "description": "新規コンポーネント作成",
+    "body": [
+      "<script setup lang=\"ts\">",
+      "",
+      "</script>",
+      "",
+      "<template>",
+      "  <div />",
+      "</template>",
+      "",
+    ],
+  },
+}
