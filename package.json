@@ -59,9 +59,7 @@
     "vue-demi": "^0.12.5",
     "web-ext": "^6.8.0",
     "webext-bridge": "^5.0.4",
-    "webextension-polyfill": "^0.9.0"
-  },
-  "dependencies": {
+    "webextension-polyfill": "^0.9.0",
     "zod": "^3.17.10"
   }
 }
