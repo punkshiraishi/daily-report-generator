@@ -1,11 +1,11 @@
 import { z } from 'zod'
 
 export const timeentrySchema = z.object({
-  _id: z.string(),
+  id: z.string(),
   description: z.string(),
   userId: z.string(),
   billable: z.boolean(),
-  taskId: z.string(),
+  taskId: z.string().nullable(),
   projectId: z.string(),
   clientId: z.string(),
   timeInterval: z.object({
@@ -13,13 +13,13 @@ export const timeentrySchema = z.object({
     end: z.string(),
     duration: z.number(),
   }),
-  approvalRequestId: z.string(),
+  approvalRequestId: z.string().nullable(),
   tags: z.string().array(),
   isLocked: z.boolean(),
   customFields: z.object({
     customFieldId: z.string(),
     value: z.string(),
-  }).array(),
+  }).array().nullable(),
   amount: z.number(),
   rate: z.number(),
   userName: z.string(),
