@@ -46,6 +46,7 @@
     "fs-extra": "^10.1.0",
     "jsdom": "^19.0.0",
     "kolorist": "^1.5.1",
+    "lodash": "^4.17.21",
     "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.2",
     "tsup": "^5.12.8",
@@ -62,8 +63,5 @@
     "webext-bridge": "^5.0.4",
     "webextension-polyfill": "^0.9.0",
     "zod": "^3.17.10"
-  },
-  "dependencies": {
-    "lodash": "^4.17.21"
   }
 }
