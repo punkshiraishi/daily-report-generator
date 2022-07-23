@@ -1,5 +1,5 @@
 import type { ProtocolWithReturn } from 'webext-bridge'
-import type { ClockifyTimeentry } from '~/types/clockify_timeentry'
+import type { SummaryTimeentries } from '~/background'
 
 declare module 'webext-bridge' {
   export interface ProtocolMap {
@@ -7,6 +7,6 @@ declare module 'webext-bridge' {
     // see https://github.com/antfu/webext-bridge#type-safe-protocols
     'tab-prev': { title: string | undefined }
     'get-current-tab': ProtocolWithReturn<{ tabId: number }, { title?: string }>
-    'get-clockify-timeentries': ProtocolWithReturn<{ start: Date; end: Date }, ClockifyTimeentry[]>
+    'get-clockify-timeentries': ProtocolWithReturn<{ start: Date; end: Date }, SummaryTimeentries>
   }
 }
