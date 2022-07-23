@@ -84,11 +84,8 @@ import { storageOptions } from '~/logic/storage'
       <div
         class="bg-sky-900 rounded-lg text-white text-sm text-sky-100 drop-shadow-md p-7 flex flex-col space-x-3"
       >
-        <div
-          id="copy"
-          class="material-icons self-end rounded-full cursor-pointer p-2 hover:bg-sky-100 hover:text-sky-900"
-        >
-          content_copy
+        <div class="w-10 h-10 self-end cursor-pointer p-2 flex items-center justify-center hover:bg-sky-100 hover:text-sky-900">
+          <pixelarticons-clipboard />
         </div>
       </div>
     </div>
