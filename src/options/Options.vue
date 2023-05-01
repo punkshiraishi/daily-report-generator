@@ -1,18 +1,41 @@
 <script setup lang="ts">
 import _ from 'lodash'
 import { sendMessage } from 'webext-bridge'
+import type { Dayjs } from 'dayjs'
+import dayjs from 'dayjs'
 import type { SummaryTimeentries } from '~/background'
 import { storageOptions } from '~/logic/storage'
 
 const groupedTimeentries = ref<SummaryTimeentries>()
 
-async function getTimeentries() {
-  const now = new Date()
+const today = dayjs()
+const startAt = ref(dayjs(today).format('YYYY-MM-DD'))
+const endAt = ref(dayjs(today).add(1, 'day').format('YYYY-MM-DD'))
+
+async function getReport() {
   const response = await sendMessage('get-clockify-timeentries', {
-    start: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 10),
-    end: now,
+    start: new Date(startAt.value),
+    end: new Date(endAt.value),
   })
   groupedTimeentries.value = response
+}
+
+async function getDailyReport() {
+  startAt.value = dayjs(today).format('YYYY-MM-DD')
+  endAt.value = dayjs(today).add(1, 'day').format('YYYY-MM-DD')
+
+  await getReport()
+}
+
+async function getWeeklyReport() {
+  function getMonday(date: Dayjs) {
+    return dayjs(date).add(1 - dayjs(date).day(), 'day')
+  }
+
+  startAt.value = getMonday(today).format('YYYY-MM-DD')
+  endAt.value = getMonday(today).add(5, 'day').format('YYYY-MM-DD')
+
+  await getReport()
 }
 
 const formattedTimeentries = computed(() => {
@@ -87,11 +110,13 @@ const formattedTimeentries = computed(() => {
             <div class="flex-grow">
               <input
                 id="start"
+                v-model="startAt"
                 type="date"
                 class="flex-grow border border-sky-300 rounded px-1"
               >
               <input
                 id="end"
+                v-model="endAt"
                 type="date"
                 class="flex-grow border border-sky-300 rounded px-1"
               >
@@ -112,17 +137,19 @@ const formattedTimeentries = computed(() => {
         <div class="flex flex-row justify-between space-x-3">
           <button
             class="flex-grow rounded bg-sky-500 text-white drop-shadow-md p-2"
+            @click="getReport"
           >
             指定期間で取得
           </button>
           <button
             class="flex-grow rounded bg-sky-500 text-white drop-shadow-md p-2"
-            @click="getTimeentries"
+            @click="getDailyReport"
           >
             日報取得
           </button>
           <button
             class="flex-grow rounded bg-sky-500 text-white drop-shadow-md p-2"
+            @click="getWeeklyReport"
           >
             週報取得
           </button>
