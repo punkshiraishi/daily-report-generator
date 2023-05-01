@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { storageDemo } from '~/logic/storage'
-
 function openOptionsPage() {
   browser.runtime.openOptionsPage()
 }
@@ -17,7 +15,7 @@ function openOptionsPage() {
       Open Options
     </button>
     <div class="mt-2">
-      <span class="opacity-50">Storage:</span> {{ storageDemo }}
+      <span class="opacity-50">Storage:</span>
     </div>
   </main>
 </template>
