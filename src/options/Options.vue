@@ -35,6 +35,7 @@ const formattedTimeentries = computed(() => {
             .sortBy(item => item[1].timeInterval.duration)
             .reverse()
             .forEach((item) => {
+              // eslint-disable-next-line vue/no-irregular-whitespace, no-irregular-whitespace
               output.push(`　┗ ${formatToHour(item[1].timeInterval.duration)} h ${item[0]}`)
             })
             .value()
