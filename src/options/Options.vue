@@ -73,6 +73,18 @@ const formattedTimeentries = computed(() => {
 
   return output.join('\n')
 })
+
+const copyButton = ref<HTMLButtonElement>()
+
+function copyToClipboard() {
+  if (copyButton.value) {
+    copyButton.value.innerText = 'Copied!'
+    setTimeout(() => {
+      copyButton.value!.innerText = 'Copy'
+    }, 1000)
+  }
+  navigator.clipboard.writeText(formattedTimeentries.value)
+}
 </script>
 
 <template>
@@ -162,9 +174,17 @@ const formattedTimeentries = computed(() => {
       <div
         class="bg-sky-900 rounded-lg text-white text-sm text-sky-100 drop-shadow-md p-7 flex flex-col space-x-3"
       >
-        <div class="w-10 h-10 self-end cursor-pointer p-2 flex items-center justify-center hover:bg-sky-100 hover:text-sky-900">
-          <pixelarticons-clipboard />
-        </div>
+        <button
+          ref="copyButton"
+          class="
+            px-3 h-10 self-end cursor-pointer p-2 flex items-center justify-center
+            border border-sky-100 rounded
+            hover:bg-sky-100 hover:text-sky-900
+          "
+          @click="copyToClipboard"
+        >
+          Copy
+        </button>
         <pre>{{ formattedTimeentries }}</pre>
       </div>
     </div>
