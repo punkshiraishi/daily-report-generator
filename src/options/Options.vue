@@ -12,6 +12,10 @@ const today = dayjs()
 const startAt = ref(dayjs(today).format('YYYY-MM-DD'))
 const endAt = ref(dayjs(today).add(1, 'day').format('YYYY-MM-DD'))
 
+onMounted(async () => {
+  await getReport()
+})
+
 async function getReport() {
   const response = await sendMessage('get-clockify-timeentries', {
     start: new Date(startAt.value),
