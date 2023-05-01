@@ -1,8 +1,8 @@
 {
-  "name": "vitesse-webext",
-  "displayName": "Vitesse WebExt",
+  "name": "daily-report-generator",
+  "displayName": "Daily Report Generator",
   "version": "0.0.1",
-  "description": "[description]",
+  "description": "Generate daily report from time trackers.",
   "private": true,
   "scripts": {
     "dev": "npm run clear && cross-env NODE_ENV=development run-p dev:*",
