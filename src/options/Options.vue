@@ -13,7 +13,8 @@ const startAt = ref(dayjs(today).format('YYYY-MM-DD'))
 const endAt = ref(dayjs(today).add(1, 'day').format('YYYY-MM-DD'))
 
 onMounted(async () => {
-  await getReport()
+  if (storageOptions.value.clockifyToken && storageOptions.value.clockifyWorkspace)
+    await getReport()
 })
 
 async function getReport() {
