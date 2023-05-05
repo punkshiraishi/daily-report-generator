@@ -170,7 +170,8 @@ function copyToClipboard() {
             <div class="flex-grow space-y-2">
               <div>
                 <select
-                  id="item-sort-order" v-model="itemSortOrder"
+                  id="item-sort-order"
+                  v-model="itemSortOrder"
                   name="item-sort-order"
                   class="border border-sky-300 rounded px-1"
                 >
