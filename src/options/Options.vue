@@ -11,6 +11,8 @@ const groupedTimeentries = ref<SummaryTimeentries>()
 const today = dayjs()
 const startAt = ref(dayjs(today).format('YYYY-MM-DD'))
 const endAt = ref(dayjs(today).add(1, 'day').format('YYYY-MM-DD'))
+const itemSortOrder = ref<'by_time_desc' | 'by_name_asc'>('by_time_desc')
+const omitTime = ref(false)
 
 onMounted(async () => {
   if (storageOptions.value.clockifyToken && storageOptions.value.clockifyWorkspace)
@@ -60,11 +62,22 @@ const formattedTimeentries = computed(() => {
           output.push(`【${item[0]}】`)
           _.chain(item[1])
             .entries()
-            .sortBy(item => item[1].timeInterval.duration)
-            .reverse()
+            .sortBy((item) => {
+              if (itemSortOrder.value === 'by_time_desc')
+                return -item[1].timeInterval.duration
+
+              if (itemSortOrder.value === 'by_name_asc')
+                return item[0]
+            })
             .forEach((item) => {
-              // eslint-disable-next-line vue/no-irregular-whitespace, no-irregular-whitespace
-              output.push(`　┗ ${formatToHour(item[1].timeInterval.duration)} h ${item[0]}`)
+              if (omitTime.value) {
+                // eslint-disable-next-line vue/no-irregular-whitespace, no-irregular-whitespace
+                output.push(`　┗ ${item[0]}`)
+              }
+              else {
+                // eslint-disable-next-line vue/no-irregular-whitespace, no-irregular-whitespace
+                output.push(`　┗ ${formatToHour(item[1].timeInterval.duration)} h ${item[0]}`)
+              }
             })
             .value()
         })
@@ -148,6 +161,37 @@ function copyToClipboard() {
                 id="min"
                 class="flex-grow border border-sky-300 rounded px-1"
               >
+            </div>
+          </div>
+          <div class="flex flex-row">
+            <div class="font-bold" style="width: 12rem">
+              出力オプション
+            </div>
+            <div class="flex-grow space-y-2">
+              <div>
+                <select
+                  id="item-sort-order"
+                  v-model="itemSortOrder"
+                  name="item-sort-order"
+                  class="border border-sky-300 rounded px-1"
+                >
+                  <option value="by_time_desc">
+                    時間で並び替え
+                  </option>
+                  <option value="by_name_asc">
+                    名前で並び替え
+                  </option>
+                </select>
+              </div>
+              <div class="flex items-center gap-2">
+                <input
+                  id="omit-time"
+                  v-model="omitTime"
+                  type="checkbox"
+                  class="border border-sky-300 rounded px-1"
+                >
+                <label for="omit-time">時間を表示しない</label>
+              </div>
             </div>
           </div>
         </div>
