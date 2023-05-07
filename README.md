@@ -1,5 +1,8 @@
 # Daily Report Generator
 Clockify で収集したタイムエントリーから日報用のテキストを作るツールです。
+Chrome ウェブストアで公開しています。
+
+https://chrome.google.com/webstore/detail/daily-report-generator/bmdlandlljfpmfdifcdfbkodjdndipmg
 
 # 使い方
 - 拡張アイコンをクリックして日報作成画面を開きます。
