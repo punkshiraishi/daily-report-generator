@@ -116,7 +116,7 @@ function copyToClipboard() {
           </div>
           <div class="flex flex-row">
             <div class="font-bold" style="width: 12rem">
-              Clockify Access Token
+              Clockify API Key
             </div>
             <input
               v-model="storageOptions.clockifyToken"
