@@ -1,6 +1,16 @@
+// Vuetify
+import 'vuetify/styles'
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
 import { createApp } from 'vue'
-import App from './Options.vue'
 import '../styles'
 
-const app = createApp(App)
-app.mount('#app')
+import App from './Options.vue'
+
+const vuetify = createVuetify({
+  components,
+  directives,
+})
+
+createApp(App).use(vuetify).mount('#app')

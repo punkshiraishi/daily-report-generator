@@ -48,6 +48,7 @@ export const MV3Hmr = (): PluginOption => {
 
         if (importedModules) {
           for (const mod of importedModules) {
+            console.log(mod)
             code = code.replace(mod.url, normalizeViteUrl(isWin
               ? mod.url.replace(/[A-Z]:\//,'').replace(/:/,'.')
               : mod.url,
