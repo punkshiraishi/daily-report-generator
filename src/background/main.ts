@@ -1,5 +1,5 @@
 import browser from 'webextension-polyfill'
-import { onMessage } from 'webext-bridge'
+import { onMessage } from 'webext-bridge/background'
 import _ from 'lodash'
 import { getTimeentries } from '~/api/clockify'
 import type { ClockifyTimeentry } from '~/types/clockify_timeentry'

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import _ from 'lodash'
-import { sendMessage } from 'webext-bridge'
+import { sendMessage } from 'webext-bridge/options'
 import type { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
-import type { SummaryTimeentries } from '~/background'
+import type { SummaryTimeentries } from '~/background/main'
 import { storageOptions } from '~/logic/storage'
 
 const groupedTimeentries = ref<SummaryTimeentries>()

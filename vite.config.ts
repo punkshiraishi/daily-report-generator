@@ -1,6 +1,6 @@
 /// <reference types="vitest" />
 
-import { dirname, relative } from 'path'
+import { dirname, relative } from 'node:path'
 import type { UserConfig } from 'vite'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
@@ -8,10 +8,10 @@ import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
-import WindiCSS from 'vite-plugin-windicss'
-import windiConfig from './windi.config'
+import UnoCSS from 'unocss/vite'
+import { Vuetify3Resolver } from 'unplugin-vue-components/resolvers'
 import { isDev, port, r } from './scripts/utils'
-import { MV3Hmr } from './vite-mv3-hmr'
+import packageJson from './package.json'
 
 export const sharedConfig: UserConfig = {
   root: r('src'),
@@ -22,6 +22,7 @@ export const sharedConfig: UserConfig = {
   },
   define: {
     __DEV__: isDev,
+    __NAME__: JSON.stringify(packageJson.name),
   },
   plugins: [
     Vue(),
@@ -48,11 +49,15 @@ export const sharedConfig: UserConfig = {
         IconsResolver({
           componentPrefix: '',
         }),
+        Vuetify3Resolver(),
       ],
     }),
 
     // https://github.com/antfu/unplugin-icons
     Icons(),
+
+    // https://github.com/unocss/unocss
+    UnoCSS(),
 
     // rewrite assets to use relative path
     {
@@ -86,6 +91,9 @@ export default defineConfig(({ command }) => ({
     },
   },
   build: {
+    watch: isDev
+      ? {}
+      : undefined,
     outDir: r('extension/dist'),
     emptyOutDir: false,
     sourcemap: isDev ? 'inline' : false,
@@ -100,16 +108,6 @@ export default defineConfig(({ command }) => ({
       },
     },
   },
-  plugins: [
-    ...sharedConfig.plugins!,
-
-    // https://github.com/antfu/vite-plugin-windicss
-    WindiCSS({
-      config: windiConfig,
-    }),
-
-    MV3Hmr(),
-  ],
   test: {
     globals: true,
     environment: 'jsdom',
