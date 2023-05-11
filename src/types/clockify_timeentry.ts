@@ -14,7 +14,7 @@ export const timeentrySchema = z.object({
     duration: z.number(),
   }),
   approvalRequestId: z.string().nullable(),
-  tags: z.string().array().optional(),
+  tags: z.any().array().optional(),
   isLocked: z.boolean(),
   customFields: z.object({
     customFieldId: z.string(),
@@ -30,4 +30,3 @@ export const timeentrySchema = z.object({
 })
 
 export type ClockifyTimeentry = z.infer<typeof timeentrySchema>
-
