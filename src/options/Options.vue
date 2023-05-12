@@ -14,6 +14,7 @@ const endAt = ref(dayjs(today).add(1, 'day').format('YYYY-MM-DD'))
 const itemSortOrder = ref<'by_time_desc' | 'by_name_asc'>('by_time_desc')
 const omitTime = ref(false)
 const panel = ref([0, 1, 2])
+const loading = ref(false)
 
 onMounted(async () => {
   if (storageOptions.value.clockifyToken && storageOptions.value.clockifyWorkspace)
@@ -21,11 +22,18 @@ onMounted(async () => {
 })
 
 async function getReport() {
-  const response = await sendMessage('get-clockify-timeentries', {
-    start: new Date(startAt.value),
-    end: new Date(endAt.value),
-  })
-  groupedTimeentries.value = response
+  try {
+    loading.value = true
+
+    const response = await sendMessage('get-clockify-timeentries', {
+      start: new Date(startAt.value),
+      end: new Date(endAt.value),
+    })
+    groupedTimeentries.value = response
+  }
+  finally {
+    loading.value = false
+  }
 }
 
 async function onSetToday() {
@@ -189,6 +197,7 @@ function copyToClipboard() {
         />
         <v-btn
           class="bg-sky-500 text-white"
+          :loading="loading"
           @click="getReport"
         >
           タイムエントリー取得
