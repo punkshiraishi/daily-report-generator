@@ -13,6 +13,7 @@ const startAt = ref(dayjs(today).format('YYYY-MM-DD'))
 const endAt = ref(dayjs(today).add(1, 'day').format('YYYY-MM-DD'))
 const itemSortOrder = ref<'by_time_desc' | 'by_name_asc'>('by_time_desc')
 const omitTime = ref(false)
+const panel = ref([0, 1, 2])
 
 onMounted(async () => {
   if (storageOptions.value.clockifyToken && storageOptions.value.clockifyWorkspace)
@@ -27,22 +28,18 @@ async function getReport() {
   groupedTimeentries.value = response
 }
 
-async function getDailyReport() {
+async function onSetToday() {
   startAt.value = dayjs(today).format('YYYY-MM-DD')
   endAt.value = dayjs(today).add(1, 'day').format('YYYY-MM-DD')
-
-  await getReport()
 }
 
-async function getWeeklyReport() {
+async function onSetThisWeek() {
   function getMonday(date: Dayjs) {
     return dayjs(date).add(1 - dayjs(date).day(), 'day')
   }
 
   startAt.value = getMonday(today).format('YYYY-MM-DD')
   endAt.value = getMonday(today).add(5, 'day').format('YYYY-MM-DD')
-
-  await getReport()
 }
 
 const formattedTimeentries = computed(() => {
@@ -88,150 +85,141 @@ const formattedTimeentries = computed(() => {
   return output.join('\n')
 })
 
-const copyButton = ref<HTMLButtonElement>()
+const copied = ref(false)
 
 function copyToClipboard() {
-  if (copyButton.value) {
-    copyButton.value.innerText = 'Copied!'
-    setTimeout(() => {
-      copyButton.value!.innerText = 'Copy'
-    }, 1000)
-  }
   navigator.clipboard.writeText(formattedTimeentries.value)
+
+  copied.value = true
+
+  setTimeout(() => {
+    copied.value = false
+  }, 1000)
 }
 </script>
 
 <template>
-  <main class="p-5 flex flex-col items-center">
-    <div class="flex flex-col space-y-5" style="width: 40rem">
-      <div class="py-5 text-3xl">
+  <v-layout>
+    <v-app-bar scroll-threshold="0">
+      <div class="p-5 text-2xl">
         <span class="text-sky-500">Clockify</span><span> to</span><span class="font-bold"> 日報</span>
       </div>
-      <div class="flex flex-col space-y-3">
-        <div
-          class="p-5 rounded-lg bg-sky-100 drop-shadow-md flex flex-col space-y-3"
+    </v-app-bar>
+    <v-main class="flex flex-col items-center">
+      <div class="w-full min-w-[20rem] max-w-[40rem] p-5 flex flex-col space-y-3">
+        <v-expansion-panels
+          v-model="panel"
+          multiple
         >
-          <div class="py-1 text-xl text-sky-500">
-            Settings
-          </div>
-          <div class="flex flex-row">
-            <div class="font-bold" style="width: 12rem">
-              Clockify API Key
-            </div>
-            <input
-              v-model="storageOptions.clockifyToken"
-              class="flex-grow border border-sky-300 rounded px-1"
-              type="password"
-            >
-          </div>
-          <div class="flex flex-row">
-            <div class="font-bold" style="width: 12rem">
-              Clockify Workspace ID
-            </div>
-            <input
-              v-model="storageOptions.clockifyWorkspace"
-              class="flex-grow border border-sky-300 rounded px-1"
-            >
-          </div>
-          <div class="flex flex-row">
-            <div class="font-bold" style="width: 12rem">
-              集計日付
-            </div>
-            <div class="flex-grow">
-              <input
-                id="start"
-                v-model="startAt"
-                type="date"
-                class="flex-grow border border-sky-300 rounded px-1"
-              >
-              <input
-                id="end"
-                v-model="endAt"
-                type="date"
-                class="flex-grow border border-sky-300 rounded px-1"
-              >
-            </div>
-          </div>
-          <div class="flex flex-row">
-            <div class="font-bold" style="width: 12rem">
-              最小時間
-            </div>
-            <div class="flex-grow">
-              <input
-                id="min"
-                class="flex-grow border border-sky-300 rounded px-1"
-              >
-            </div>
-          </div>
-          <div class="flex flex-row">
-            <div class="font-bold" style="width: 12rem">
-              出力オプション
-            </div>
-            <div class="flex-grow space-y-2">
-              <div>
-                <select
-                  id="item-sort-order"
-                  v-model="itemSortOrder"
-                  name="item-sort-order"
-                  class="border border-sky-300 rounded px-1"
-                >
-                  <option value="by_time_desc">
-                    時間で並び替え
-                  </option>
-                  <option value="by_name_asc">
-                    名前で並び替え
-                  </option>
-                </select>
+          <v-expansion-panel>
+            <template #title>
+              設定
+            </template>
+            <template #text>
+              <v-text-field
+                v-model="storageOptions.clockifyToken"
+                density="compact"
+                type="password"
+                label="Clockify API Key"
+              />
+              <v-text-field
+                v-model="storageOptions.clockifyWorkspace"
+                density="compact"
+                label="Clockify Workspace ID"
+              />
+            </template>
+          </v-expansion-panel>
+          <v-expansion-panel>
+            <template #title>
+              集計期間
+            </template>
+            <template #text>
+              <div class="flex flex-row space-x-3">
+                <v-text-field
+                  id="start"
+                  v-model="startAt"
+                  density="compact"
+                  type="date"
+                  label="開始日"
+                />
+                <v-text-field
+                  id="end"
+                  v-model="endAt"
+                  density="compact"
+                  type="date"
+                  label="終了日"
+                />
               </div>
-              <div class="flex items-center gap-2">
-                <input
-                  id="omit-time"
-                  v-model="omitTime"
-                  type="checkbox"
-                  class="border border-sky-300 rounded px-1"
-                >
-                <label for="omit-time">時間を表示しない</label>
+              <div class="flex flex-row space-x-3">
+                <v-btn @click="onSetToday">
+                  今日
+                </v-btn>
+                <v-btn @click="onSetThisWeek">
+                  今週
+                </v-btn>
               </div>
-            </div>
-          </div>
-        </div>
-        <div class="flex flex-row justify-between space-x-3">
-          <button
-            class="flex-grow rounded bg-sky-500 text-white drop-shadow-md p-2"
-            @click="getReport"
-          >
-            指定期間で取得
-          </button>
-          <button
-            class="flex-grow rounded bg-sky-500 text-white drop-shadow-md p-2"
-            @click="getDailyReport"
-          >
-            日報取得
-          </button>
-          <button
-            class="flex-grow rounded bg-sky-500 text-white drop-shadow-md p-2"
-            @click="getWeeklyReport"
-          >
-            週報取得
-          </button>
-        </div>
-      </div>
-      <div
-        class="bg-sky-900 rounded-lg text-white text-sm text-sky-100 drop-shadow-md p-7 flex flex-col space-x-3"
-      >
-        <button
-          ref="copyButton"
-          class="
-            px-3 h-10 self-end cursor-pointer p-2 flex items-center justify-center
-            border border-sky-100 rounded
-            hover:bg-sky-100 hover:text-sky-900
-          "
-          @click="copyToClipboard"
+            </template>
+          </v-expansion-panel>
+          <v-expansion-panel>
+            <template #title>
+              集計オプション
+            </template>
+            <template #text>
+              <v-select
+                v-model="itemSortOrder"
+                label="並び順"
+                :items="[{ label: '時間で並び替え', value: 'by_time_desc' }, { label: '名前で並び替え', value: 'by_name_asc' }]"
+                item-title="label"
+                item-value="value"
+                density="compact"
+              />
+              <v-checkbox
+                v-model="omitTime"
+
+                density="compact"
+                label="時間を表示しない"
+              />
+            </template>
+          </v-expansion-panel>
+        </v-expansion-panels>
+        <v-icon
+          icon="mdi-arrow-down"
+          class="text-sky-500 self-center"
+          size="30"
+        />
+        <v-btn
+          class="bg-sky-500 text-white"
+          @click="getReport"
         >
-          Copy
-        </button>
-        <pre>{{ formattedTimeentries }}</pre>
+          タイムエントリー取得
+        </v-btn>
+        <v-icon
+          icon="mdi-arrow-down"
+          class="text-sky-500 self-center"
+          size="30"
+        />
+        <v-card
+          class="relative bg-sky-800 text-white text-sky-100 p-7"
+        >
+          <v-btn
+            class="absolute right-3 top-3"
+            variant="plain"
+            density="comfortable"
+            icon
+            @click="copyToClipboard"
+          >
+            <v-icon :icon="copied ? 'mdi-check' : 'mdi-content-copy'" />
+            <v-tooltip
+              activator="parent"
+              location="bottom"
+              theme="light"
+            >
+              {{ copied ? 'Copied!' : 'Copy text' }}
+            </v-tooltip>
+          </v-btn>
+          <pre>{{ formattedTimeentries }}</pre>
+        </v-card>
       </div>
-    </div>
-  </main>
+    </v-main>
+  </v-layout>
 </template>
