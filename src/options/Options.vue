@@ -109,9 +109,20 @@ function copyToClipboard() {
 <template>
   <v-layout>
     <v-app-bar scroll-threshold="0">
-      <div class="p-5 text-2xl">
+      <v-app-bar-title class="p-5 text-2xl">
         <span class="text-sky-500">Clockify</span><span> to</span><span class="font-bold"> 日報</span>
-      </div>
+      </v-app-bar-title>
+      <template #append>
+        <v-btn icon href="https://chrome.google.com/webstore/detail/daily-report-generator/bmdlandlljfpmfdifcdfbkodjdndipmg?hl=ja&authuser=0">
+          <v-icon icon="mdi-shopping" class="text-sky-800" />
+          <v-tooltip
+            activator="parent"
+          >
+            Chrome ウェブストアを開く <v-icon icon="mdi-open-in-new" />
+          </v-tooltip>
+        </v-btn>
+      </template>
+      <v-spacer />
     </v-app-bar>
     <v-main class="flex flex-col items-center">
       <div class="w-full min-w-[20rem] max-w-[40rem] p-5 flex flex-col space-y-3">
@@ -221,7 +232,6 @@ function copyToClipboard() {
             <v-tooltip
               activator="parent"
               location="bottom"
-              theme="light"
             >
               {{ copied ? 'Copied!' : 'Copy text' }}
             </v-tooltip>
