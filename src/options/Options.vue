@@ -109,12 +109,14 @@ function copyToClipboard() {
 <template>
   <v-layout>
     <v-app-bar scroll-threshold="0">
-      <v-app-bar-title class="p-5 text-2xl">
-        <span class="text-sky-500">Clockify</span><span> to</span><span class="font-bold"> 日報</span>
+      <v-app-bar-title class="pa-5">
+        <span class="text-light-blue">
+          Clockify
+        </span><span> to</span><span class="font-weight-bold"> 日報</span>
       </v-app-bar-title>
       <template #append>
         <v-btn icon href="https://chrome.google.com/webstore/detail/daily-report-generator/bmdlandlljfpmfdifcdfbkodjdndipmg?hl=ja&authuser=0">
-          <v-icon icon="mdi-shopping" class="text-sky-800" />
+          <v-icon icon="mdi-shopping" color="light-blue-darken-4" />
           <v-tooltip
             activator="parent"
           >
@@ -124,10 +126,11 @@ function copyToClipboard() {
       </template>
       <v-spacer />
     </v-app-bar>
-    <v-main class="flex flex-col items-center">
-      <div class="w-full min-w-[20rem] max-w-[40rem] p-5 flex flex-col space-y-3">
+    <v-main class="d-flex flex-column align-center">
+      <div class="w-100 pa-5 d-flex flex-column" style="min-width: 20rem; max-width: 40rem;">
         <v-expansion-panels
           v-model="panel"
+          class="mb-3"
           multiple
         >
           <v-expansion-panel>
@@ -153,24 +156,26 @@ function copyToClipboard() {
               集計期間
             </template>
             <template #text>
-              <div class="flex flex-row space-x-3">
+              <div class="d-flex flex-row">
                 <v-text-field
-                  id="start"
                   v-model="startAt"
+                  class="mr-3"
                   density="compact"
                   type="date"
                   label="開始日"
                 />
                 <v-text-field
-                  id="end"
                   v-model="endAt"
                   density="compact"
                   type="date"
                   label="終了日"
                 />
               </div>
-              <div class="flex flex-row space-x-3">
-                <v-btn @click="onSetToday">
+              <div class="d-flex flex-row">
+                <v-btn
+                  class="mr-3"
+                  @click="onSetToday"
+                >
                   今日
                 </v-btn>
                 <v-btn @click="onSetThisWeek">
@@ -203,11 +208,13 @@ function copyToClipboard() {
         </v-expansion-panels>
         <v-icon
           icon="mdi-arrow-down"
-          class="text-sky-500 self-center"
+          color="light-blue"
+          class="align-self-center mb-3"
           size="30"
         />
         <v-btn
-          class="bg-sky-500 text-white"
+          color="light-blue"
+          class="mb-3"
           :loading="loading"
           @click="getReport"
         >
@@ -215,14 +222,16 @@ function copyToClipboard() {
         </v-btn>
         <v-icon
           icon="mdi-arrow-down"
-          class="text-sky-500 self-center"
+          class="align-self-center mb-3"
+          color="light-blue"
           size="30"
         />
         <v-card
-          class="relative bg-sky-800 text-white text-sky-100 p-7"
+          color="light-blue-darken-3 pa-7"
+          style="position: relative;"
         >
           <v-btn
-            class="absolute right-3 top-3"
+            style="position: absolute; right: 0.75rem; top: 0.75rem;"
             variant="plain"
             density="comfortable"
             icon
