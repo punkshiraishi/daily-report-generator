@@ -20,6 +20,11 @@ async function stubIndexHtml() {
     data = data
       .replace('"./main.ts"', `"http://localhost:${port}/${view}/main.ts"`)
       .replace('<div id="app"></div>', '<div id="app">Vite server did not start</div>')
+
+    // hack: 開発モードでは mdi のフォントが読み込めないので、CDN を使う。直せたら直したい。
+    if (isDev && view === 'options')
+      data = data.replace('<head>', '<head><link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">')
+
     await fs.writeFile(r(`extension/dist/${view}/index.html`), data, 'utf-8')
     log('PRE', `stub ${view}`)
   }
