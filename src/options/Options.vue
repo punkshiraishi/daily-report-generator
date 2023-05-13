@@ -2,6 +2,7 @@
 import _ from 'lodash'
 import { sendMessage } from 'webext-bridge/options'
 import dayjs from 'dayjs'
+import { mdiArrowDown, mdiCheck, mdiContentCopy, mdiLeadPencil, mdiOpenInNew, mdiShopping } from '@mdi/js'
 import type { SummaryTimeentries } from '~/background/main'
 import { storageOptions } from '~/logic/storage'
 
@@ -151,11 +152,11 @@ function copyToClipboard() {
       </v-app-bar-title>
       <template #append>
         <v-btn icon href="https://chrome.google.com/webstore/detail/daily-report-generator/bmdlandlljfpmfdifcdfbkodjdndipmg?hl=ja&authuser=0">
-          <v-icon icon="mdi-shopping" color="light-blue-darken-4" />
+          <v-icon :icon="mdiShopping" color="light-blue-darken-4" />
           <v-tooltip
             activator="parent"
           >
-            Chrome ウェブストアを開く <v-icon icon="mdi-open-in-new" />
+            Chrome ウェブストアを開く <v-icon :icon="mdiOpenInNew" />
           </v-tooltip>
         </v-btn>
       </template>
@@ -278,7 +279,7 @@ function copyToClipboard() {
           </v-expansion-panel>
         </v-expansion-panels>
         <v-icon
-          icon="mdi-arrow-down"
+          :icon="mdiArrowDown"
           color="light-blue"
           class="align-self-center mb-3"
           size="30"
@@ -289,10 +290,10 @@ function copyToClipboard() {
           :loading="loading"
           @click="getReport"
         >
-          <v-icon icon="mdi-lead-pencil" />レポート作成
+          <v-icon :icon="mdiLeadPencil" />レポート作成
         </v-btn>
         <v-icon
-          icon="mdi-arrow-down"
+          :icon="mdiArrowDown"
           class="align-self-center mb-3"
           color="light-blue"
           size="30"
@@ -308,7 +309,7 @@ function copyToClipboard() {
             icon
             @click="copyToClipboard"
           >
-            <v-icon :icon="copied ? 'mdi-check' : 'mdi-content-copy'" />
+            <v-icon :icon="copied ? mdiCheck : mdiContentCopy" />
             <v-tooltip
               activator="parent"
               location="bottom"

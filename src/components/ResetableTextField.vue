@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { mdiCached } from '@mdi/js'
+
 defineEmits(['reset'])
 </script>
 
@@ -13,7 +15,7 @@ defineEmits(['reset'])
         icon
         @click="$emit('reset')"
       >
-        <v-icon icon="mdi-cached" />
+        <v-icon :icon="mdiCached" />
         <v-tooltip
           activator="parent"
           location="bottom"
