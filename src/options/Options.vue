@@ -34,18 +34,34 @@ async function getReport() {
   }
 }
 
+async function onSetYesterday() {
+  startAt.value = dayjs(today).subtract(1, 'day').format('YYYY-MM-DD')
+  endAt.value = dayjs(today).format('YYYY-MM-DD')
+}
+
 async function onSetToday() {
   startAt.value = dayjs(today).format('YYYY-MM-DD')
   endAt.value = dayjs(today).add(1, 'day').format('YYYY-MM-DD')
 }
 
-async function onSetThisWeek() {
-  function getMonday(date: Dayjs) {
-    return dayjs(date).add(1 - dayjs(date).day(), 'day')
-  }
+async function onSetLastWeek() {
+  startAt.value = dayjs(today).subtract(1, 'week').startOf('week').format('YYYY-MM-DD')
+  endAt.value = dayjs(today).subtract(1, 'week').endOf('week').format('YYYY-MM-DD')
+}
 
-  startAt.value = getMonday(today).format('YYYY-MM-DD')
-  endAt.value = getMonday(today).add(5, 'day').format('YYYY-MM-DD')
+async function onSetThisWeek() {
+  startAt.value = dayjs(today).startOf('week').format('YYYY-MM-DD')
+  endAt.value = dayjs(today).endOf('week').format('YYYY-MM-DD')
+}
+
+async function onSetLastMonth() {
+  startAt.value = dayjs(today).subtract(1, 'month').startOf('month').format('YYYY-MM-DD')
+  endAt.value = dayjs(today).subtract(1, 'month').endOf('month').format('YYYY-MM-DD')
+}
+
+async function onSetThisMonth() {
+  startAt.value = dayjs(today).startOf('month').format('YYYY-MM-DD')
+  endAt.value = dayjs(today).endOf('month').format('YYYY-MM-DD')
 }
 
 function formatClientName(clientName: string) {
@@ -189,12 +205,39 @@ function copyToClipboard() {
               <div class="d-flex flex-row">
                 <v-btn
                   class="mr-3"
+                  @click="onSetYesterday"
+                >
+                  昨日
+                </v-btn>
+                <v-btn
+                  class="mr-3"
                   @click="onSetToday"
                 >
                   今日
                 </v-btn>
-                <v-btn @click="onSetThisWeek">
+                <v-btn
+                  class="mr-3"
+                  @click="onSetLastWeek"
+                >
+                  先週
+                </v-btn>
+                <v-btn
+                  class="mr-3"
+                  @click="onSetThisWeek"
+                >
                   今週
+                </v-btn>
+                <v-btn
+                  class="mr-3"
+                  @click="onSetLastMonth"
+                >
+                  先月
+                </v-btn>
+                <v-btn
+                  class="mr-3"
+                  @click="onSetThisMonth"
+                >
+                  今月
                 </v-btn>
               </div>
             </template>
