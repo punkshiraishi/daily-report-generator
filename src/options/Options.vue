@@ -264,7 +264,7 @@ function copyToClipboard() {
               <v-select
                 v-model="itemSortOrder"
                 label="並び順"
-                :items="[{ label: '時間で並び替え', value: 'by_time_desc' }, { label: '名前で並び替え', value: 'by_name_asc' }]"
+                :items="[{ label: '合計時間 降順', value: 'by_time_desc' }, { label: '名前 昇順', value: 'by_name_asc' }]"
                 item-title="label"
                 item-value="value"
                 density="compact"
@@ -284,7 +284,7 @@ function copyToClipboard() {
           :loading="loading"
           @click="getReport"
         >
-          タイムエントリー取得
+          <v-icon icon="mdi-lead-pencil" />レポート作成
         </v-btn>
         <v-icon
           icon="mdi-arrow-down"
