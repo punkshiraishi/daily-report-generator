@@ -140,9 +140,14 @@ function copyToClipboard() {
   <v-layout>
     <v-app-bar scroll-threshold="0">
       <v-app-bar-title class="pa-5">
-        <span class="text-light-blue">
+        <a
+          href="https://app.clockify.me/tracker"
+          target="_blank"
+          class="text-light-blue mr-2"
+        >
           Clockify
-        </span><span> to</span><span class="font-weight-bold"> 日報</span>
+        </a>
+        <span class="font-weight-bold">Daily Report Generator</span>
       </v-app-bar-title>
       <template #append>
         <v-btn icon href="https://chrome.google.com/webstore/detail/daily-report-generator/bmdlandlljfpmfdifcdfbkodjdndipmg?hl=ja&authuser=0">
