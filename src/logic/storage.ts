@@ -6,6 +6,9 @@ export const optionsSchema = z.object({
   clockifyToken: z.string(),
   clockifyWorkspace: z.string(),
   panelOpenStatus: z.number().array(),
+  clientNameFormat: z.string(),
+  projectNameFormat: z.string(),
+  taskNameFormat: z.string(),
 })
 
 export async function getOptions() {
@@ -23,6 +26,9 @@ export const storageOptions = useStorageLocal<Options>(
     clockifyToken: '',
     clockifyWorkspace: '',
     panelOpenStatus: [],
+    clientNameFormat: '■ {value}',
+    projectNameFormat: '【{value}】',
+    taskNameFormat: '　┗ {time} h {value}',
   },
   { listenToStorageChanges: true },
 )

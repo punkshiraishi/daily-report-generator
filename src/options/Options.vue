@@ -12,7 +12,6 @@ const today = dayjs()
 const startAt = ref(dayjs(today).format('YYYY-MM-DD'))
 const endAt = ref(dayjs(today).add(1, 'day').format('YYYY-MM-DD'))
 const itemSortOrder = ref<'by_time_desc' | 'by_name_asc'>('by_time_desc')
-const omitTime = ref(false)
 const loading = ref(false)
 
 onMounted(async () => {
@@ -49,21 +48,45 @@ async function onSetThisWeek() {
   endAt.value = getMonday(today).add(5, 'day').format('YYYY-MM-DD')
 }
 
-const formattedTimeentries = computed(() => {
-  const formatToHour = (num: number) => {
-    return (Math.round(num / 3600 * 100) / 100).toFixed(1)
-  }
+function formatClientName(clientName: string) {
+  return storageOptions.value.clientNameFormat
+    .replace('{value}', clientName)
+}
 
+function formatProjectName(projectName: string) {
+  return storageOptions.value.projectNameFormat
+    .replace('{value}', projectName)
+}
+
+function formatTaskName(taskName: string, time: number) {
+  return storageOptions.value.taskNameFormat
+    .replace('{value}', taskName)
+    .replace('{time}', (Math.round(time / 3600 * 100) / 100).toFixed(1).toString())
+}
+
+function resetClientNameFormat() {
+  storageOptions.value.clientNameFormat = '■ {value}'
+}
+
+function resetProjectNameFormat() {
+  storageOptions.value.projectNameFormat = '【{value}】'
+}
+
+function resetTaskNameFormat() {
+  storageOptions.value.taskNameFormat = '　┗ {time} h {value}'
+}
+
+const formattedTimeentries = computed(() => {
   const output: string[] = []
 
   _.chain(groupedTimeentries.value)
     .entries()
     .forEach((item) => {
-      output.push(`\n■ ${item[0]}`)
+      output.push(`\n${formatClientName(item[0])}`)
       _.chain(item[1])
         .entries()
         .forEach((item) => {
-          output.push(`【${item[0]}】`)
+          output.push(formatProjectName(item[0]))
           _.chain(item[1])
             .entries()
             .sortBy((item) => {
@@ -74,14 +97,7 @@ const formattedTimeentries = computed(() => {
                 return item[0]
             })
             .forEach((item) => {
-              if (omitTime.value) {
-                // eslint-disable-next-line vue/no-irregular-whitespace, no-irregular-whitespace
-                output.push(`　┗ ${item[0]}`)
-              }
-              else {
-                // eslint-disable-next-line vue/no-irregular-whitespace, no-irregular-whitespace
-                output.push(`　┗ ${formatToHour(item[1].timeInterval.duration)} h ${item[0]}`)
-              }
+              output.push(formatTaskName(item[0], item[1].timeInterval.duration))
             })
             .value()
         })
@@ -113,7 +129,7 @@ function copyToClipboard() {
           Clockify
         </span><span> to</span><span class="font-weight-bold"> 日報</span>
       </v-app-bar-title>
-      <template #append>
+      <template #append-inner>
         <v-btn icon href="https://chrome.google.com/webstore/detail/daily-report-generator/bmdlandlljfpmfdifcdfbkodjdndipmg?hl=ja&authuser=0">
           <v-icon icon="mdi-shopping" color="light-blue-darken-4" />
           <v-tooltip
@@ -188,6 +204,21 @@ function copyToClipboard() {
               集計オプション
             </template>
             <template #text>
+              <ResetableTextField
+                v-model="storageOptions.clientNameFormat"
+                label="見出し 1 のフォーマット"
+                @reset="resetClientNameFormat"
+              />
+              <ResetableTextField
+                v-model="storageOptions.projectNameFormat"
+                label="見出し 2 のフォーマット"
+                @reset="resetProjectNameFormat"
+              />
+              <ResetableTextField
+                v-model="storageOptions.taskNameFormat"
+                label="タスク名のフォーマット"
+                @reset="resetTaskNameFormat"
+              />
               <v-select
                 v-model="itemSortOrder"
                 label="並び順"
@@ -195,12 +226,6 @@ function copyToClipboard() {
                 item-title="label"
                 item-value="value"
                 density="compact"
-              />
-              <v-checkbox
-                v-model="omitTime"
-
-                density="compact"
-                label="時間を表示しない"
               />
             </template>
           </v-expansion-panel>
