@@ -144,7 +144,7 @@ function copyToClipboard() {
           Clockify
         </span><span> to</span><span class="font-weight-bold"> 日報</span>
       </v-app-bar-title>
-      <template #append-inner>
+      <template #append>
         <v-btn icon href="https://chrome.google.com/webstore/detail/daily-report-generator/bmdlandlljfpmfdifcdfbkodjdndipmg?hl=ja&authuser=0">
           <v-icon icon="mdi-shopping" color="light-blue-darken-4" />
           <v-tooltip
