@@ -13,7 +13,6 @@ const startAt = ref(dayjs(today).format('YYYY-MM-DD'))
 const endAt = ref(dayjs(today).add(1, 'day').format('YYYY-MM-DD'))
 const itemSortOrder = ref<'by_time_desc' | 'by_name_asc'>('by_time_desc')
 const omitTime = ref(false)
-const panel = ref([0, 1, 2])
 const loading = ref(false)
 
 onMounted(async () => {
@@ -129,7 +128,7 @@ function copyToClipboard() {
     <v-main class="d-flex flex-column align-center">
       <div class="w-100 pa-5 d-flex flex-column" style="min-width: 20rem; max-width: 40rem;">
         <v-expansion-panels
-          v-model="panel"
+          v-model="storageOptions.panelOpenStatus"
           class="mb-3"
           multiple
         >

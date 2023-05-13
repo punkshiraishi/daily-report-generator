@@ -5,6 +5,7 @@ export const optionsSchema = z.object({
   gitlabToken: z.string(),
   clockifyToken: z.string(),
   clockifyWorkspace: z.string(),
+  panelOpenStatus: z.number().array(),
 })
 
 export async function getOptions() {
@@ -21,6 +22,7 @@ export const storageOptions = useStorageLocal<Options>(
     gitlabToken: '',
     clockifyToken: '',
     clockifyWorkspace: '',
+    panelOpenStatus: [],
   },
   { listenToStorageChanges: true },
 )
