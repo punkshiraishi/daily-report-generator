@@ -2,7 +2,7 @@
 import _ from 'lodash'
 import { sendMessage } from 'webext-bridge/options'
 import dayjs from 'dayjs'
-import { mdiArrowDown, mdiCheck, mdiContentCopy, mdiLeadPencil, mdiOpenInNew, mdiShopping } from '@mdi/js'
+import { mdiArrowDown, mdiCheck, mdiContentCopy, mdiGithub, mdiLeadPencil, mdiOpenInNew, mdiShopping } from '@mdi/js'
 import type { SummaryTimeentries } from '~/background/main'
 import { storageOptions } from '~/logic/storage'
 
@@ -155,8 +155,18 @@ function copyToClipboard() {
           <v-icon :icon="mdiShopping" color="light-blue-darken-4" />
           <v-tooltip
             activator="parent"
+            location="bottom"
           >
             Chrome ウェブストアを開く <v-icon :icon="mdiOpenInNew" />
+          </v-tooltip>
+        </v-btn>
+        <v-btn icon href="https://github.com/punkshiraishi/daily-report-generator">
+          <v-icon :icon="mdiGithub" color="light-blue-darken-4" />
+          <v-tooltip
+            activator="parent"
+            location="bottom"
+          >
+            Github リポジトリページを開く <v-icon :icon="mdiOpenInNew" />
           </v-tooltip>
         </v-btn>
       </template>
