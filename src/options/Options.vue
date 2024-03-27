@@ -74,10 +74,11 @@ function formatProjectName(projectName: string) {
     .replace('{value}', projectName)
 }
 
-function formatTaskName(taskName: string, time: number) {
+function formatTaskName(taskName: string, time: number, tags?: any[]) {
   return storageOptions.value.taskNameFormat
     .replace('{value}', taskName)
     .replace('{time}', (Math.round(time / 3600 * 100) / 100).toFixed(1).toString())
+    .replace('{tags}', tags?.map(tag => `[${tag.name}]`).join('') || '')
 }
 
 function resetClientNameFormat() {
@@ -89,7 +90,7 @@ function resetProjectNameFormat() {
 }
 
 function resetTaskNameFormat() {
-  storageOptions.value.taskNameFormat = '　┗ {time} h {value}'
+  storageOptions.value.taskNameFormat = '　┗ {time} h {value} {tags}'
 }
 
 const formattedTimeentries = computed(() => {
@@ -113,7 +114,7 @@ const formattedTimeentries = computed(() => {
                 return item[0]
             })
             .forEach((item) => {
-              output.push(formatTaskName(item[0], item[1].timeInterval.duration))
+              output.push(formatTaskName(item[0], item[1].timeInterval.duration, item[1].tags))
             })
             .value()
         })

@@ -5,7 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.0.7] - 2024-03-26
+
+### Added
+
+- タグを表示する機能を追加
+
 ## [0.0.6] - 2023-07-21
+
+## [0.0.5] - 2023-05-13
 
 ### Changed
 
