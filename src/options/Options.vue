@@ -98,8 +98,11 @@ const formattedTimeentries = computed(() => {
 
   _.chain(groupedTimeentries.value)
     .entries()
-    .forEach((item) => {
-      output.push(`\n${formatClientName(item[0])}`)
+    .forEach((item, index) => {
+      if (index > 0) {
+        output.push('')
+      }
+      output.push(formatClientName(item[0]))
       _.chain(item[1])
         .entries()
         .forEach((item) => {
@@ -128,7 +131,7 @@ const formattedTimeentries = computed(() => {
 const copied = ref(false)
 
 function copyToClipboard() {
-  navigator.clipboard.writeText(formattedTimeentries.value)
+  navigator.clipboard.writeText(formattedTimeentries.value.trim())
 
   copied.value = true
 
