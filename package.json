@@ -1,7 +1,7 @@
 {
   "name": "daily-report-generator",
   "displayName": "Daily Report Generator",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "private": true,
   "description": "Generate daily report from time trackers.",
   "scripts": {
