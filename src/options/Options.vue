@@ -98,8 +98,8 @@ const formattedTimeentries = computed(() => {
 
   _.chain(groupedTimeentries.value)
     .entries()
-    .forEach((item) => {
-      output.push(`\n${formatClientName(item[0])}`)
+    .forEach((item, index) => {
+      output.push(`${index === 0 ? '' : '\n'}${formatClientName(item[0])}`)
       _.chain(item[1])
         .entries()
         .forEach((item) => {
