@@ -2,8 +2,8 @@
   "name": "daily-report-generator",
   "displayName": "Daily Report Generator",
   "version": "0.0.6",
-  "description": "Generate daily report from time trackers.",
   "private": true,
+  "description": "Generate daily report from time trackers.",
   "scripts": {
     "dev": "npm run clear && cross-env NODE_ENV=development run-p dev:*",
     "dev:prepare": "esno scripts/prepare.ts",
